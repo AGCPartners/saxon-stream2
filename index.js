@@ -1,5 +1,5 @@
 var fs = require('fs'),
-    exec = require('child_process').exec;
+    exec = require('child_process').spawn;
 var through2 = require('through2'),
     tmp = require('temporary');
 
@@ -33,14 +33,21 @@ function saxonStream2(jarPath,xslPath,opt){
     // Array.prototype.push.apply(opts,saxonOpts);
     opts = opts.concat(saxonOpts);
 
-    var cmd = exec('java '+opts.join(' '),{timeout:timeout},function(err,stdout,stderr){
-      if(err) return n(err);
-      if(stderr) return n(stderr);
-      if(stdout!==''){
-        console.log(stdout);
-      }
-    });
+    var cmd = exec('java',opts,{timeout:timeout});
     
+    cmd.stdout.on('data', function(data) {
+      console.log(data);
+    });
+
+    cmd.stderr.on('data', function(data) {
+      console.log('cmd stderr:'+data);
+    });
+
+    cmd.on('error',function(error){
+      console.log('error');
+      console.log(error);
+    });
+
     cmd.on('exit',function(code,sig){
       var cont = fs.readFileSync(result.path);
       self.push(cont);
