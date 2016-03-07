@@ -3,7 +3,7 @@ var fs = require('fs'),
 var through2 = require('through2'),
     tmp = require('temporary');
 
-function saxonStream2(jarPath,xslPath,opt){
+function saxonStream2(jarPath,xslPath,param,opt){
   var buf = [];
   var timeout = 5000;
   var saxonOpts = ['-warnings:silent'];
