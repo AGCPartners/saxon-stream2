@@ -27,7 +27,8 @@ function saxonStream2(jarPath,xslPath,opt){
       '-jar',jarPath,
       '-s:'+xml.path,
       '-xsl:'+xslPath,
-      '-o:'+result.path
+      '-o:'+result.path,
+      'param='+param
     ];
 
     // Array.prototype.push.apply(opts,saxonOpts);
